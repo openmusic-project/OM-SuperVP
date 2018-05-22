@@ -6,11 +6,11 @@
 
 (:om-lib
  
- (:version 2.8)
+ (:version 2.9)
 
  (:doc "OM-SuperVP is a library for the control of SuperVP from OpenMusic.\n The library contains functions for sound analysis (FFT, Transients, Fundamental frequency, Formants) and processing (Time/Frequency transformations, filters, cross-synthesis, etc.).\n\n OM-SuperVP requires SuperVP to be installed, authorized, and declared as an OM external (see Preferences/Extrernals).")
 
- (:author "J. Bresson, J. Lochard, IRCAM (2006-2016)")
+ (:author "J. Bresson, J. Lochard, IRCAM (2006-2018)")
 
 ;;; SOURCE FILES TO LOAD
 (:source-files

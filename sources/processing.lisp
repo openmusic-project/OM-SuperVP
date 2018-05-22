@@ -56,10 +56,11 @@
   (declare (ignore filename))
   (namestring (if (probe-file (pathname self)) self (paramfile self))))
 
-(defmethod make-temp-param ((self number) &optional filename)
-  (declare (ignore filename))
-  (format nil "~D" self))
+(defmethod make-temp-param ((self number) &optional (filename "svp-tmp-param.par"))
+  (format nil "~f" self))
 
+(defmethod make-temp-param ((self integer) &optional (filename "svp-tmp-param.par"))
+  (format nil "~D" self))
 
 ;;;================ 
 ;;; FORMAT SVP COMMAND
@@ -73,8 +74,8 @@
   (let ((supervp-path (om::real-exec-pathname (om::get-pref-value :libraries :supervp-path))))
     (if (and supervp-path (probe-file supervp-path))
         (let ((srcpath (pathname srcpath))
-              (beginstr (if begin (format nil "-B~D " begin) "")) 
-              (endstr (if end (format nil "-E~D " end) ""))
+              (beginstr (if begin (format nil "-B~f " begin) "")) 
+              (endstr (if end (format nil "-E~f " end) "")) 
               (command ""))
           (when (probe-file srcpath)
              
@@ -97,14 +98,14 @@
                                      (if (listp preserve-transient) preserve-transient
                                        '(1.4 (0.0 22050.0) 1.5 nil)))))
 
-                  (setf command (om::string+ command (format nil "-P1 -td_thresh ~D -td_band ~D,~D -td_ampfac ~D "
+                  (setf command (om::string+ command (format nil "-P1 -td_thresh ~f -td_band ~f,~f -td_ampfac ~f "
                                                              (nth 0 tr-settings)
                                                              (car (nth 1 tr-settings))
                                                              (cadr (nth 1 tr-settings))
                                                              (nth 2 tr-settings)
                                                              )))
                   (when (nth 4 tr-settings)
-                    (setf command (om::string+ command (format nil "-td_relaxto ~D -td_relax ~D ")
+                    (setf command (om::string+ command (format nil "-td_relaxto ~f -td_relax ~f ")
                                                (car (nth 3 tr-settings))
                                                (cadr (nth 3 tr-settings))
                                                )))
@@ -180,7 +181,7 @@
 
 (defmethod! om::supervp-timestretch ((self number))
     :icon 951 
-    (format nil "-D~D" self))
+    (format nil "-D~f" self))
 
 (defmethod! om::supervp-timestretch ((self pathname))
     (format nil "-D~s" (namestring self)))
@@ -536,7 +537,7 @@ When <extrapolation>, SuperVP applies the treatment outside the time limits defi
 
 (defmethod! om::supervp-gain ((self number))
     :icon 951 
-    (format nil "-ggain ~D" self))
+    (format nil "-ggain ~f" self))
 
 (defmethod! om::supervp-gain ((self pathname))
     (format nil "-ggain \"~a\"" (namestring self)))
