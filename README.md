@@ -1,6 +1,6 @@
 # om-supervp
 
-This library allows to use sound analysis and processing kernel SuperVP in OM/o7 visua programs.
+This library allows to use sound analysis and processing kernel SuperVP in OM/o7 visual programs.
 
 It does not incluse SuperVP, which must be installed separately and located in the SuperVP section of o7 Preferences/Libraries tab
 
