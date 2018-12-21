@@ -1,12 +1,12 @@
 ;;;===========================================================================
 ;;; OM-SuperVP
-;;; SuperVP sound analysis and processing for om7
-;;; J. Bresson, J. Lochard, IRCAM (2006-2016-2017)
+;;; SuperVP sound analysis and processing for OM
+;;; J. Bresson, J. Lochard, IRCAM (2006-2018)
 ;;;===========================================================================
 
 (:om-lib
  
- (:version 2.9)
+ (:version 2.10)
 
  (:doc "OM-SuperVP is a library for the control of SuperVP from OpenMusic.\n The library contains functions for sound analysis (FFT, Transients, Fundamental frequency, Formants) and processing (Time/Frequency transformations, filters, cross-synthesis, etc.).\n\n OM-SuperVP requires SuperVP to be installed, authorized, and declared as an OM external (see Preferences/Extrernals).")
 
@@ -22,7 +22,7 @@
   (:pathname (:directory (:relative "sources")) (:name "synthesis"))
   (:pathname (:directory (:relative "sources")) (:name "channels"))
   (:pathname (:directory (:relative "sources")) (:name "formants"))
-  (:pathname (:directory (:relative "sources")) (:name "preferences")))
+  (:pathname (:directory (:relative "sources")) (:name "om7-preferences")))
 
 ;;; DECLATRED SYMBOLS VISIBLE AND ACCESSIBLE THROUGH THE OM PACKAGE TREE
 (:symbols

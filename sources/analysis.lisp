@@ -59,7 +59,7 @@ Note that only sdiffiles at gabarit 3 and 5 can be used to recalculate a sound f
 - <out> : output file pathname
 "
 
-  (let ((supervp-path (om::real-exec-pathname (om::get-pref-value :libraries :supervp-path))))
+  (let ((supervp-path (om::svp-path)))
     (if (and supervp-path (probe-file supervp-path))
         (let ((outname (namestring (if out
                                        (om::handle-new-file-exists (if (pathnamep out) out (om::outfile out)))
@@ -96,8 +96,8 @@ Note that only sdiffiles at gabarit 3 and 5 can be used to recalculate a sound f
 
 (defmethod! om::fft ((in sound) &key begin-time end-time (windowsize 4096) (fftsize 4096) (step 256) 
                  (windowtype "hanning") (gabarit 1) (out "fft.sdif"))
-  (if (om::file-pathname in)
-      (om::fft (om::file-pathname in) 
+  (if (om::om-sound-file-name in)
+      (om::fft (om::om-sound-file-name in) 
                :begin-time begin-time :end-time end-time 
                :fftsize fftsize :windowsize windowsize
                :step step :windowtype windowtype :gabarit gabarit 
@@ -148,7 +148,7 @@ Note that only sdiffiles at gabarit 3 and 5 can be used to recalculate a sound f
 - <out> : output file pathname
 "
 
-  (let ((supervp-path (om::real-exec-pathname (om::get-pref-value :libraries :supervp-path))))
+  (let ((supervp-path (om::svp-path)))
     (if (and supervp-path (probe-file supervp-path))
         (let ((outname (namestring (if out
                                        (om::handle-new-file-exists (if (pathnamep out) out (om::outfile out)))
@@ -188,8 +188,8 @@ Note that only sdiffiles at gabarit 3 and 5 can be used to recalculate a sound f
 
 (defmethod! om::true-envelope ((in sound) &key begin-time end-time (windowsize 4096) (fftsize 4096) (step 256) 
                  (windowtype "hanning") (max-fun-freq 1000) (gabarit 1) (out "true_envelope.sdif"))
-  (if (om::file-pathname in)
-      (om::true-envelope (om::file-pathname in) 
+  (if (om::om-sound-file-name in)
+      (om::true-envelope (om::om-sound-file-name in) 
                :begin-time begin-time :end-time end-time 
                :fftsize fftsize :windowsize windowsize
                :step step :windowtype windowtype 
@@ -240,7 +240,7 @@ The results of analysis are stored in an SDIF file which pathname is returned.
 - <out> : output file pathname
 
 "
-  (let ((supervp-path (om::real-exec-pathname (om::get-pref-value :libraries :supervp-path))))
+  (let ((supervp-path (om::svp-path)))
     (if (and supervp-path (probe-file supervp-path))
         (let ((outname (namestring (if out 
                            (om::handle-new-file-exists (if (pathnamep out) out (om::outfile out)))
@@ -283,8 +283,8 @@ The results of analysis are stored in an SDIF file which pathname is returned.
 (defmethod! om::f0-estimate ((in sound) &key begin-time end-time 
                          (fund-minfreq 50.0) (fund-maxfreq 1000.0) (spectrum-maxfreq 4000.0) (noise-threshold 50.0) (smooth-order 3)
                          (windowsize 4096) (fftsize 4096) (step 256) (windowtype "hanning") (out "f0.sdif"))  
-  (if (om::file-pathname in)
-      (om::f0-estimate (om::file-pathname in) 
+  (if (om::om-sound-file-name in)
+      (om::f0-estimate (om::om-sound-file-name in) 
                :begin-time begin-time :end-time end-time 
                :fund-minfreq fund-minfreq :fund-maxfreq fund-maxfreq :spectrum-maxfreq spectrum-maxfreq 
                :noise-threshold noise-threshold :smooth-order smooth-order
@@ -327,7 +327,7 @@ The results of analysis are stored in an SDIF file which pathname is returned.
 
 - <out> : output file pathname
 "
-  (let ((supervp-path (om::real-exec-pathname (om::get-pref-value :libraries :supervp-path))))
+  (let ((supervp-path (om::svp-path)))
     (if (and supervp-path (probe-file supervp-path))
         (let ((outname (namestring (if out 
                                        (om::handle-new-file-exists (if (pathnamep out) out (om::outfile out)))
@@ -367,8 +367,8 @@ The results of analysis are stored in an SDIF file which pathname is returned.
                          (threshold 1.4) (minfreq 0.0) (maxfreq 22050.0) (minoffset 0.02)
                          (windowsize 4096) (fftsize 4096) (step-oversamp 8) (windowtype "hanning") 
                          (out "markers.sdif"))
-  (if (om::file-pathname in)
-      (om::transient-detection (om::file-pathname in) 
+  (if (om::om-sound-file-name in)
+      (om::transient-detection (om::om-sound-file-name in) 
                        :threshold threshold :minfreq minfreq :maxfreq maxfreq :minoffset minoffset
                        :windowsize windowsize :fftsize fftsize :step-oversamp step-oversamp :windowtype windowtype 
                        :out out)
@@ -411,7 +411,7 @@ The results of analysis are stored in an SDIF file which pathname is returned.
 - <out> : output file pathname
 
 "
-  (let ((supervp-path (om::real-exec-pathname (om::get-pref-value :libraries :supervp-path))))
+  (let ((supervp-path (om::svp-path)))
     (if (and supervp-path (probe-file supervp-path))
         (let ((outname (namestring (if out 
                                        (om::handle-new-file-exists (if (pathnamep out) out (om::outfile out)))
@@ -444,7 +444,7 @@ The results of analysis are stored in an SDIF file which pathname is returned.
                               (analysis-mode 'lpc) (max-n-formants 45) (analysis-order 45) (extend-across-sound-limits nil)
                               (windowsize 2048) (fftsize 2048) (step-oversamp 8) (windowtype "blackman") 
                               (out "formants.sdif"))
-  (om::formant-analysis (namestring in) 
+  (om::formant-analysis (namestring in)
                :analysis-mode analysis-mode :max-n-formants max-n-formants :analysis-order analysis-order 
                :extend-across-sound-limits extend-across-sound-limits 
                :windowsize windowsize :fftsize fftsize :step-oversamp step-oversamp :windowtype windowtype 
@@ -454,8 +454,8 @@ The results of analysis are stored in an SDIF file which pathname is returned.
                               (analysis-mode 'lpc) (max-n-formants 45) (analysis-order 45) (extend-across-sound-limits nil)
                               (windowsize 2048) (fftsize 2048) (step-oversamp 8) (windowtype "blackman") 
                               (out "formants.sdif"))
-   (if (om::file-pathname in)
-       (om::formant-analysis (om::file-pathname in) 
+   (if (om::om-sound-file-name in)
+       (om::formant-analysis (om::om-sound-file-name in) 
                               :analysis-mode analysis-mode :max-n-formants max-n-formants :analysis-order analysis-order 
                               :extend-across-sound-limits extend-across-sound-limits 
                               :windowsize windowsize :fftsize fftsize :step-oversamp step-oversamp :windowtype windowtype 

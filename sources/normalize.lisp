@@ -21,7 +21,7 @@
 
 ;; !! rescale > O
 (defun svp-norm (path newpath &optional (rescale 0.0) (resolution 16))
-  (let ((supervp-path (om::real-exec-pathname (om::get-pref-value :libraries :supervp-path))))
+  (let ((supervp-path (om::svp-path)))
     (if (and supervp-path (probe-file supervp-path))
         (progn
       (om::handle-new-file-exists newpath)
@@ -45,15 +45,15 @@
         (om::om-beep-msg "NORMALIZE: Error in SuperVP processing. No output file created."))
     ))
 
-(defmethod! om::supervp-normalize ((self pathname) &optional (out "normout.aif") (rescale nil) (res nil))
-     :initvals '(nil "normout.aif" nil nil)
+(defmethod! om::supervp-normalize ((self pathname) &optional (out "normout.aif") (rescale nil) (res 16))
+     :initvals '(nil "normout.aif" nil 16)
      :indoc '("sound or sound file pathname" "output file name" "scale factor" "output resolution")
      :icon 950
      :doc "Normalizes <self> in a new sound file <outfile>.
 
 If <rescale> and <resolution> are NIL (default) they will be set according to the values in OM audio preferences.
 "  
-     (let ((resolution (or res (om::get-pref-value :audio :default-resolution) 16))
+     (let ((resolution res)
            (rescaledb (or rescale 0.0))
            (outf (if out (if (pathnamep out) out (om::outfile out))
                   (om::om-choose-file-dialog :prompt "Save as..." :directory (om::outfile nil)))))
@@ -61,9 +61,9 @@ If <rescale> and <resolution> are NIL (default) they will be set according to th
 
 ;;; TODO: handle the case where the sound has no file (buffer)
 (defmethod! om::supervp-normalize ((self om::sound) &optional (out "normout.aif") (rescale nil) (resolution nil))
-   (if (om::file-pathname self)
-       (om::supervp-normalize (om::file-pathname self) out rescale resolution))
-   (om::om-beep-msg "SUPERVP-NORMALIZE: input sound file must be saved on disk!"))
+   (if (om::om-sound-file-name self)
+       (om::supervp-normalize (om::om-sound-file-name self) out rescale resolution)
+   (om::om-beep-msg "SUPERVP-NORMALIZE: input sound file must be saved on disk!")))
 
 ;(defmethod om::general-normalize ((norm (eql :supervp)) inpath outpath val &optional resolution)
 ;  (supervp-normalize inpath outpath val resolution))

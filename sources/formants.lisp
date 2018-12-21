@@ -22,6 +22,7 @@
             :icon 530
             :initvals '(((800 0 80)) 1024 8000 t)
             :menuins '((3 (("dB" t) ("Lin." nil))))
+            :numouts 2 :outdoc '("frequencies" "amplitudes")
             :indoc '("list of formant values" "resolution" "max frequency [Hz]" "amplitude units")
             :doc "Builds a spectral envelope from a list of formants.
 
@@ -51,7 +52,7 @@ This function is inspired from initial works by Ph. Depalle and X. Rodet.
             ))
     ;(simple-bpf-from-list freqs (om-scale envelope -100 0 0 1) 'bpf 3)
     ;(simple-bpf-from-list freqs (if db (lin->db envelope) envelope)'bpf 3)
-    (make-instance 'om::bpf :x-points freqs :y-points (if db (om::lin->db envelope) envelope) :decimals 4)
+    (values freqs (if db (om::lin->db envelope) envelope))
     ))
 
 (defun one-formant (freq ampl band tex resolution maxfreq)

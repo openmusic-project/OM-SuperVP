@@ -19,53 +19,69 @@
 (in-package :svp)
 
 
+;;; utils
+(defmethod sound-n-channels ((self om::sound))
+  (om::om-sound-n-channels self))
+
+(defmethod sound-n-channels ((self pathname))
+  (let ((thesound (om::get-sound self))) 
+    (om::om-sound-n-channels thesound)))
+
+(defmethod sound-n-channels ((self string))
+  (sound-n-channels (pathname self)))
+
+
+;;; seems to work only if files to merge have same or less channels than the first file
 (defmethod! om::supervp-merge (files &optional outpath)
             :initvals '(nil)
-            :indoc '("a list of sounds (or sound file pathnames) or a directory pathname" "output pathname")
+            :indoc '("a list of sounds (or sound file pathnames) or a directory pathname" 
+                     "output pathname")
             :icon 950
             :doc "
 Merges all files in <files> into a single multi-channel audio file.
 
 If <outname> is not specified, the merged file will be created in the in <files> if <files> is a directory, or in the OUT-FILES folder (see OM preferences) if not.
 "
-      (let ((file-list 
-             (mapcar 'namestring 
-                     (cond ((listp files) 
-                            (remove nil (loop for item in files collect 
-                                              (if (subtypep (type-of item) 'om::sound) 
-                                                  (or (om::file-pathname item)
-                                                      (om::om-beep-msg "This sound has no attached file on disk!"))
-                                                item))))
-                           ((and (pathnamep files) (om::om-directory-pathname-p files))
-                            (om::om-directory files :directories nil))
-                           (t nil))))
-            (outname (namestring 
-                      (cond ((pathnamep outpath) outpath)
-                            ((and (pathnamep files) (om::om-directory-pathname-p files) (stringp outpath))
-                             (om::om-make-pathname :directory files :name outpath))
-                            ((and (pathnamep files) (om::om-directory-pathname-p files))
-                             (om::om-make-pathname :directory files :name "merge-file" :type "aiff"))
-                            (t (om::outfile "merge-file.aiff")))))
-            (param-file (paramfile "tmp-merge.par")))
+            (let ((file-list 
+                   (mapcar 'namestring 
+                           (cond ((listp files) 
+                                  (remove nil (loop for item in files 
+                                                    collect 
+                                                    (if (subtypep (type-of item) 'om::sound) 
+                                                        (or (om::om-sound-file-name item)
+                                                            (om::om-beep-msg "This sound has no attached file on disk!"))
+                                                      item)))) 
+                                 ((and (pathnamep files) (om::om-directory-pathname-p files))
+                                  (om::om-directory files :directories nil))
+                                 (t nil))))
+                  (outname (namestring 
+                            (cond ((pathnamep outpath) outpath)
+                                  ((and (pathnamep files) (om::om-directory-pathname-p files) (stringp outpath))
+                                   (om::om-make-pathname :directory files :name outpath))
+                                  ((and (pathnamep files) (om::om-directory-pathname-p files))
+                                   (om::om-make-pathname :directory files :name "merge-file" :type "aiff"))
+                                  (t (om::outfile "merge-file.aiff")))))
+                  (param-file (om::svp-paramfile "tmp-merge.par")))
+           
+              (om::add-tmp-file param-file)
         
-        (om::add-tmp-file param-file)
-        (with-open-file (out param-file :direction :output 
-                             :if-does-not-exist :create :if-exists :supersede)
-          (loop for sndf in (cdr file-list) 
-                for i = (1+ (om::n-channels (om::get-sound (car file-list)))) do
-                (let ((scrchans (om::n-channels (om::get-sound sndf))))
-                  (format out "~s~%" sndf)
-                  (dotimes (src-ch scrchans)
-                    (format out "[~D/0,~D]~%" i (1+ src-ch))
-                    (setf i (1+ i)))
-                  ))
-          )
+              (with-open-file (out param-file :direction :output 
+                                   :if-does-not-exist :create :if-exists :supersede)
+                
+                (let ((i (1+ (sound-n-channels (car file-list))))) ;;; chan-number of first mixed channel
+                  (loop for sndf in (cdr file-list) do
+                        (format out "~s~%" sndf)
+                        (dotimes (src-ch (sound-n-channels sndf))
+                          (format out "[~D/0,~D]~%" i (1+ src-ch))
+                          (setf i (+ i 1)))
+                        ))
+                )
           
-        (om::supervp-command (format nil "-S~s -mixlist ~s ~s" (car file-list) (namestring param-file) outname))
+              (om::supervp-command (format nil "-S~s -mixlist ~s ~s" (car file-list) (namestring param-file) outname))
 
-        (om::maybe-clean-tmp-files)
+              ;(om::maybe-clean-tmp-files)
         
-        (or (probe-file outname) (om::om-beep-msg "SuperVP merging error"))))
+              (or (probe-file outname) (om::om-beep-msg "SuperVP merging error"))))
 
 
 (defmethod! om::supervp-mix (files &optional outpath)
@@ -81,12 +97,12 @@ If <outname> is not specified, the merged file will be created in the in <files>
         (file-list 
          (mapcar 'namestring 
                  (cond ((subtypep (type-of files) 'om::sound) 
-                        (if (om::file-pathname files) (list (om::file-pathname files))
+                        (if (om::om-sound-file-name files) (list (om::om-sound-file-name files))
                           (om::om-beep-msg "This sound has no attached file on disk!")))
                        ((listp files) 
                         (remove nil (loop for item in files collect 
                                           (if (subtypep (type-of item) 'om::sound) 
-                                              (or (om::file-pathname item)
+                                              (or (om::om-sound-file-name item)
                                                   (om::om-beep-msg "This sound has no attached file on disk!"))
                                             item))))
                        ((and (pathnamep files) (om::om-directory-pathname-p files))
@@ -99,7 +115,7 @@ If <outname> is not specified, the merged file will be created in the in <files>
                         ((and (pathnamep files) (om::om-directory-pathname-p files))
                          (om::om-make-pathname :directory files :name "mix-file" :type "aiff"))
                         (t (om::outfile "mix-file.aiff")))))
-        (param-file (paramfile "tmp-mix.par")))
+        (param-file (om::svp-paramfile "tmp-mix.par")))
       
     (om::add-tmp-file source)
     (om::add-tmp-file param-file)
@@ -108,7 +124,7 @@ If <outname> is not specified, the merged file will be created in the in <files>
           ;(dotimes (src-ch (om::n-channels (om::get-sound (car file-list))))
           ;  (format out "[1/0,~D]~%" (1+ src-ch)))
       (loop for sndf in file-list do
-            (let ((scrchans (om::n-channels (om::get-sound sndf))))
+            (let ((scrchans (sound-n-channels sndf)))
               (format out "~s~%" sndf)
               (dotimes (src-ch scrchans)
                 (format out "[1/0,~D,.5]~%" (1+ src-ch))
@@ -130,23 +146,14 @@ If <outname> is not specified, the merged file will be created in the in <files>
 
 ;;;======================================================================================
 
-(defmethod sound-n-channels ((self om::sound))
-  (om::n-channels self))
-
-(defmethod sound-n-channels ((self pathname))
-  (let ((thesound (om::get-sound self))) 
-    (om::n-channels thesound)))
-
-(defmethod sound-n-channels ((self string))
-  (sound-n-channels (pathname self)))
 
 (defmethod supervp-extract-one-channel (file n outfile)
   (om::supervp-command (format nil "-S~s -C~D ~s" (namestring file) n (namestring outfile)))
   (probe-file outfile))
 
 (defmethod supervp-extract-one-channel ((file om::sound) n outfile)
-  (if (om::file-pathname file)
-      (supervp-extract-one-channel (om::file-pathname file) n outfile)
+  (if (om::om-sound-file-name file)
+      (supervp-extract-one-channel (om::om-sound-file-name file) n outfile)
     (om::om-beep-msg "SUPERVP-SPLIT: input sound file must be saved on disk!")
     ))
 
@@ -189,8 +196,8 @@ If <outfolder> is not specified, the extracted channel files are stored in a sub
 
 
 (defmethod! om::supervp-split ((file om::sound) &optional channels outfolder)
-     (if (om::file-pathname file)
-         (om::supervp-split (om::file-pathname file) channels outfolder)     
+     (if (om::om-sound-file-name file)
+         (om::supervp-split (om::om-sound-file-name file) channels outfolder)     
        (om::om-beep-msg "SUPERVP-SPLIT: input sound file must be saved on disk!")))
         
         

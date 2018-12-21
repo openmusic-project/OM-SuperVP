@@ -21,7 +21,7 @@
 (defmethod default-supervp-path () 
   (let ((libpath (mypathname (find-library "om-supervp"))))
     (om-make-pathname :directory (append (pathname-directory libpath) 
-                                         '("resources" "bin")
+                                         '("bin")
                                          #+macosx '("mac" "SuperVP.app" "Contents" "MacOS") 
                                          #+win32 '("win")
                                          #+linux '("linux")
@@ -32,9 +32,14 @@
 (defmethod default-supervp-params-folder () (get-pref-value :files :tmp-file))
 
 (add-preference-section :libraries "om-SuperVP" nil '(:supervp-path :supervp-authorize :supervp-temp-folder))
-(add-preference :libraries :supervp-path "SuperVP exec" :file 'default-supervp-path) 
+(add-preference :libraries :supervp-path "SuperVP exec" :file 'default-supervp-path)
 (add-preference :libraries :supervp-authorize "Authorize" :action 'authorize-supervp)
 (add-preference :libraries :supervp-temp-folder "Param folder" :folder 'default-supervp-params-folder) 
+
+
+(defun svp-path () (om::real-exec-pathname (om::get-pref-value :libraries :supervp-path)))
+(defmethod svp-paramfile ((name string)) (merge-pathnames name (om::get-pref-value :libraries :supervp-temp-folder)))
+(defmethod svp-paramfile ((name null)) (om::get-pref-value :libraries :supervp-temp-folder))
 
 
 ;;; works for pm2...

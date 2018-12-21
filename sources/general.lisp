@@ -17,10 +17,10 @@
 
 
 (in-package :svp)
-  
+
 (defmethod! om::supervp-command ((cmd string))
   :icon 950  
-  (let ((supervp-path (om::real-exec-pathname (om::get-pref-value :libraries :supervp-path))))
+  (let ((supervp-path (om::svp-path)))
     (if (and supervp-path (probe-file supervp-path))
         (om::om-cmd-line (format nil "~s ~A" (namestring supervp-path) cmd)) 
       (om::om-beep-msg "SuperVP not found! Set path to SuperVP in the OM preferences."))))
