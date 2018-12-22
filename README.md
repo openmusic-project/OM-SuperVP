@@ -4,14 +4,15 @@
 
 This library allows to use sound analysis and processing kernel SuperVP in OM visual programs.
 
-_This library does NOT include SuperVP sources or binaries, which must be installed separately and located in the SuperVP section of OM Preferences/Libraries tab._
-
 OM-SuperVP library for OM by Jean Bresson and Jean Lochard, (c) IRCAM 2006-2018
 
 SuperVP is developed and distributed by IRCAM - Analysis/Synthesis team
 
 *************
 This program is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+_This library does NOT include SuperVP sources or binaries, which must be installed separately and located in the SuperVP section of OM Preferences/Libraries tab._
+
 *************
 
 ## Description
@@ -42,4 +43,18 @@ Most SuperVP processes use input files to read the parameters for sound treatmen
 
 The parameters files are generally formatted as text, and can be written and read using standard text editors (or TextFile/TextBuffer objects in OM). They also require knowledge about formatting in order to work correctly, depending on the different sound treatments and processing. OM-SuperVP deals with these formatting issues for you, and converts standard OM objects (lists, BPFs, etc.) into adapted parameter files for SuperVP.
 
+### Analysis Files
+
+All SuperVP sound analyses results are stored ans returned as [SDIF](http://sdif.sourceforge.net/) files : the analysis functions return a file pathname to connect to the **SDIFFILE** object.
+
+SDIF file contents can be inspected and converted to data lists or OM objects using the SDIF package tools.
+
 The default location for reading/writing the SuperVP parameters files can be set in the Preferences.
+
+## Library Design and Sound Processing Options
+
+OM-SuperVP boxes have a number fixed of inputs + somme additional _keyword_ inputs.
+
+Generally speaking, the options proposed in the OM boxes strictly match the corresponding options in AudioSculpt. See the function documetations (**d**) to get an overview and description of the different options of the OM-SuperVP boxes.
+
+=> Consult the AudioSculpt User Manual in order to understand and set the values of these parameters. 
