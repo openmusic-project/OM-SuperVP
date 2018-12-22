@@ -1,4 +1,6 @@
-# OM-SuperVP
+# om-supervp
+
+<img src="resources/pict/supervp.png" align=right>
 
 This library allows to use sound analysis and processing kernel SuperVP in OM visual programs.
 
@@ -26,11 +28,18 @@ OM-SuperVP provides :
 
 ## Configuration
 
-Once the OM-SuperVP library is loaded in OM, a new item will appear in the Externals tab of the OM Preferences window.
+Once the OM-SuperVP library is loaded in OM, a new item will appear in the Externals tab of the OM Preferences window. OM will display the kernel path in red if it is not found or not set correctly.
 
 Depending on your distribution SuperVP might or might not be present in your library package. 
-If needed you can specify the path to another location where it might be installed (e.g. within the _AudioSculpt_ application package).
+If needed you can specify the path to another location where it might be installed (e.g. within the _AudioSculpt_ application package: the sound processing kernels can be found inthe _AudioSculpt x.x.x/Kernels/_ folder).
 
-#### Notes
-- OM will display the kernel path in red if it is not found or not set correctly.
-- With the AudioSculpt installation, the sound processing kernels can be found inthe _AudioSculpt x.x.x/Kernels/_ folder.
+
+## File Formats
+
+### Parameters files
+
+Most SuperVP processes use input files to read the parameters for sound treatments.
+
+The parameters files are generally formatted as text, and can be written and read using standard text editors (or TextFile/TextBuffer objects in OM). They also require knowledge about formatting in order to work correctly, depending on the different sound treatments and processing. OM-SuperVP deals with these formatting issues for you, and converts standard OM objects (lists, BPFs, etc.) into adapted parameter files for SuperVP.
+
+The default location for reading/writing the SuperVP parameters files can be set in the Preferences.
