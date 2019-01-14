@@ -17,30 +17,26 @@
 ;Variable definiton with files to load 
 ;--------------------------------------------------
 
-(defvar *initfile* *load-pathname*)
-
-(defun lib-src-file (name)
-  (make-pathname :directory (append (pathname-directory *initfile*) (list "sources")) 
-                 :name name))
+;;; removes extension
+(defun lib-src-file (file)
+  (merge-pathnames file (om-make-pathname :directory *load-pathname*)))
 
 ;--------------------------------------------------
 ;Loading files 
 ;--------------------------------------------------
 
-(mapc #'(lambda (filename) 
-          (compile&load (namestring (lib-src-file filename)) t t))
-      '("package"
-        "general"
-        "normalize"
-        "analysis"
-        "processing"
-        "synthesis"
-        "channels"
-        "formants"
-        "om6-preferences"
+(mapc #'(lambda (file) (compile&load (lib-src-file file)))
+      '("sources/package"
+        "sources/general"
+        "sources/normalize"
+        "sources/analysis"
+        "sources/processing"
+        "sources/synthesis"
+        "sources/channels"
+        "sources/formants"
+        "sources/om_asx/omasx-transposition"
+        "sources/om6-preferences"
         ))
-
-
 
 ;--------------------------------------------------
 ; OM subpackages initialization
