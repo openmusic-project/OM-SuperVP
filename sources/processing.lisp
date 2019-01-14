@@ -221,13 +221,24 @@
 (defmethod get-trans-params ((self om::bpf)) (om::point-pairs self))
 (defmethod get-trans-params ((self string)) (get-trans-params (pathname self)))
 
+#+om7
 (defmethod get-trans-params ((self pathname))
   (om::format-from-text-lines 
    (remove "" (om::lines-from-file self) :test 'string-equal)
    :lines-cols))
 
+#-om7
+(defmethod get-trans-params ((self pathname)) 
+  (when (probe-file self)
+    (let ((tmpbuffer (om::om-make-buffer))
+          (lst nil))
+      (om::om-buffer-insert-file tmpbuffer self)
+      (setf lst (om::list-of-data tmpbuffer))
+      (om::om-kill-buffer tmpbuffer)
+      lst)))
+
 #+om7
-(defmethod get-trans-params ((self om::textbuffer)) (om:textbuffer-read self :lines-cols))
+(defmethod get-trans-params ((self om::textbuffer)) (om::textbuffer-read self :lines-cols))
 #-om7
 (defmethod get-trans-params ((self om::textfile)) (om::list-of-data (om::buffer-text self)))
  

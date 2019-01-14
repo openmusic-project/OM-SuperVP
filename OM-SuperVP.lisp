@@ -23,51 +23,48 @@
   (make-pathname :directory (append (pathname-directory *initfile*) (list "sources")) 
                  :name name))
 
-(defvar *OMSVP-files* nil)
-(setf *OMSVP-files* '("package"
-                      "general"
-                      "normalize"
-                      "analysis"
-                      "processing"
-                      "synthesis"
-                      "channels"
-                      "formants"
-                      "om6-preferences"
-                      ))
-
-
 ;--------------------------------------------------
 ;Loading files 
 ;--------------------------------------------------
 
 (mapc #'(lambda (filename) 
           (compile&load (namestring (lib-src-file filename)) t t))
-      *OMSVP-files*)
+      '("package"
+        "general"
+        "normalize"
+        "analysis"
+        "processing"
+        "synthesis"
+        "channels"
+        "formants"
+        "om6-preferences"
+        ))
+
+
 
 ;--------------------------------------------------
 ; OM subpackages initialization
 ; ("sub-pack-name" subpacke-lists class-list function-list class-alias-list)
 ;--------------------------------------------------
-(defvar *svppackages-list* nil)
-(setf *subpackages-list*
-      '(("Analysis" nil nil (fft f0-estimate transient-detection formant-analysis) nil)
-        ("Treatments" nil nil (supervp-transposition supervp-timestretch
-                                                     supervp-frequencyshift supervp-breakpointfilter
-                                                     supervp-formantfilter supervp-bandfilter
-                                                     supervp-clipping supervp-freeze
-                                                     supervp-surfacefilter
-                                                     supervp-gain) nil)
-        ("Processing" nil nil (supervp-processing 
-                               supervp-cross-synthesis 
-                               supervp-sourcefilter-synthesis
-                               supervp-normalize supervp-merge supervp-split) nil)
-        ("Tools" nil nil (make-spec-env) nil)
-        ))
+(om::fill-library  
+ '(("Analysis" nil nil (fft f0-estimate transient-detection formant-analysis) nil)
+   ("Treatments" nil nil (supervp-transposition supervp-timestretch
+                                                supervp-frequencyshift supervp-breakpointfilter
+                                                supervp-formantfilter supervp-bandfilter
+                                                supervp-clipping supervp-freeze
+                                                supervp-surfacefilter
+                                                supervp-gain) nil)
+        
+   ("Processing" nil nil (supervp-processing 
+                          supervp-cross-synthesis 
+                          supervp-sourcefilter-synthesis
+                          supervp-normalize supervp-merge supervp-split) nil)
+   ("ASX" nil nil (asx::trans-melody))
+   ("Tools" nil nil (make-spec-env) nil)
+   )
+ (find-library "OM-SuperVP"))
 
-;--------------------------------------------------
-;filling packages
-;--------------------------------------------------
-(om::fill-library *subpackages-list*)
+
 
 (doc-library "OM-SuperVP is a library for the control of SuperVP from OpenMusic.
 
