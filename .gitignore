@@ -2,3 +2,4 @@
 *.lisp-temp
 *.lisp~
 **/bin/**/*
+reference-pages/*
