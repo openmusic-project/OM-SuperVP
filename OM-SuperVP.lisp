@@ -25,7 +25,7 @@
 ;Loading files 
 ;--------------------------------------------------
 
-(mapc #'(lambda (file) (compile&load (lib-src-file file)))
+(mapc #'(lambda (file) (compile&load (lib-src-file file) t t))
       '("sources/package"
         "sources/general"
         "sources/normalize"
