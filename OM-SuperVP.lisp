@@ -85,12 +85,12 @@ SuperVP can also be selected as a sound normalizer in OM sound processing (see P
 
 
 (print "
-;;;===========================================================================
+;;;==========================================
 ;;; OM-SuperVP 2.10
 ;;; SuperVP sound analysis and processing for OpenMusic
 ;;;
 ;;; J. Bresson, J. Lochard, IRCAM (2006-2018)
-;;;===========================================================================
+;;;==========================================
 ")
 
 

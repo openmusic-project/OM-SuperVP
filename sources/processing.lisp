@@ -68,7 +68,7 @@
 (defun make-svp-command (srcpath processings begin end
                                  windowsize fftsize windowstep-oversamp
                                  window-type shape-invariant preserve-transient
-                                 normalize audio-res
+                                 normalize audio-res extend-across
                                  outpath)
   
   (let ((supervp-path (om::svp-path)))
@@ -83,8 +83,11 @@
             (setf command (om::string+ command (format nil "~s -t -Z " (namestring supervp-path))))
              
             (when normalize (setf command (om::string+ command "-norm ")))
-        
-            (setf command (om::string+ command (format nil "-U -S~s -Afft " (namestring srcpath))))
+            
+            ;;; in AS when "Extend across sound limits" is selected (default in AS), the -U disappears...
+            (when (null extend-across) (setf command (om::string+ command "-U ")))
+            
+            (setf command (om::string+ command (format nil "-S~s -Afft " (namestring srcpath))))
 
             (setf command (om::string+ command beginstr endstr))
              
@@ -132,17 +135,25 @@
 
 
 (defmethod! om::supervp-processing ((src pathname) processings begin end windowsize fftsize windowstep-oversamp 
-                                        window-type shape-invariant preserve-transient
-                                        normalize outfile)
+                                    window-type shape-invariant preserve-transient
+                                    normalize outfile &optional (extend-across nil))
   :icon 950 
   :menuins '((6 (("1/4" 4) ("1/8" 8) ("1/16" 16) ("1/32" 32)))
              (7 (("Blackman" "blackman") ("Hanning" "hanning")("Hamming" "hamming")))
              (8 (("Shape Invariant On" t) ("Shape Invariant Off" nil)))
-             (10 (("Normalize On" t) ("Normalize Off" nil))))
-  :initvals '(nil "" nil nil 4096 4096 8 "hanning" nil t nil "out.aiff")
+             (10 (("Normalize On" t) ("Normalize Off" nil)))
+             (12 (("Yes" t) ("No" nil))))
+  :indoc '("input sound" 
+           "treatment (or list of treatments)" 
+           "begin time (s)" "end time (s)" 
+           "size of analysis window" "FFT size" "overlapping factor" 
+           "type of analysis window (select from menu)"
+           "" "" "" "output file name" "exetdn across sound limits")
+  :initvals '(nil "" nil nil 4096 4096 8 "hanning" nil t nil "out.aiff" nil)
   (let* ((outpath (om::handle-new-file-exists (if (pathnamep outfile) outfile (om::outfile outfile))))
          (cmd (make-svp-command src processings begin end windowsize fftsize windowstep-oversamp 
                                 window-type shape-invariant preserve-transient normalize 16
+                                extend-across
                                 outpath)))
     (when cmd
       (print "==========================")
@@ -158,21 +169,23 @@
     
 (defmethod! om::supervp-processing ((src string) processings begin end windowsize fftsize windowstep-oversamp 
                                     window-type shape-invariant preserve-transient
-                                    normalize outfile)
+                                    normalize outfile &optional (extend-across nil))
   (let ((file (if (probe-file (pathname src)) (pathname src) (om::infile src))))
     (om::supervp-processing file 
                         processings begin end windowsize fftsize windowstep-oversamp 
                         window-type shape-invariant preserve-transient normalize
-                        outfile)))
+                        outfile
+                        extend-across)))
  
 (defmethod! om::supervp-processing ((src om::sound) processings begin end windowsize fftsize windowstep-oversamp 
                                      window-type shape-invariant preserve-transient
-                                     normalize outfile)
+                                     normalize outfile &optional (extend-across nil))
      (if (om::om-sound-file-name src)
          (om::supervp-processing (om::om-sound-file-name src) 
                              processings begin end windowsize fftsize windowstep-oversamp 
                              window-type shape-invariant preserve-transient normalize
-                             outfile)
+                             outfile 
+                             extend-across)
          (om::om-beep-msg "SUPERVP-PROCESSING: input sound file must be saved on disk!")))
 
 
