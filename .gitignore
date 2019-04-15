@@ -3,3 +3,4 @@
 *.lisp~
 **/bin/**/*
 reference-pages/*
+resources/reference/*
