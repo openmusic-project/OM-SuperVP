@@ -24,7 +24,7 @@
   (:pathname (:directory (:relative "sources")) (:name "formants"))
   (:pathname (:directory (:relative "sources")) (:name "om7-preferences")))
 
-;;; DECLATRED SYMBOLS VISIBLE AND ACCESSIBLE THROUGH THE OM PACKAGE TREE
+;;; SYMBOLS VISIBLE AND ACCESSIBLE THROUGH THE OM PACKAGE TREE
 (:symbols
  (:packages
   (:package 
