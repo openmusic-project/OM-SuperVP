@@ -27,7 +27,12 @@ OM-SuperVP provides :
 - connecting SuperVP processes to compositional processes and models developed in OM ;
 - ...
 
+
+<img src="./docs/images/om-supervp.png">
+
 ## Configuration
+
+<img src="./docs/images/supervp-prefpath.png" align="right">
 
 Once the OM-SuperVP library is loaded in OM, a new item will appear in the Externals tab of the OM Preferences window. OM will display the kernel path in red if it is not found or not set correctly.
 
@@ -41,15 +46,21 @@ If needed you can specify the path to another location where it might be install
 
 Most SuperVP processes use input files to read the parameters for sound treatments.
 
+<img src="./docs/images/supervp-prefwin.png" align="right">
+
 The parameters files are generally formatted as text, and can be written and read using standard text editors (or TextFile/TextBuffer objects in OM). They also require knowledge about formatting in order to work correctly, depending on the different sound treatments and processing. OM-SuperVP deals with these formatting issues for you, and converts standard OM objects (lists, BPFs, etc.) into adapted parameter files for SuperVP.
 
 ### Analysis Files
+
+<img src="./docs/images/sdiffile.png" align="right">
 
 All SuperVP sound analyses results are stored ans returned as [SDIF](http://sdif.sourceforge.net/) files : the analysis functions return a file pathname to connect to the **SDIFFILE** object.
 
 SDIF file contents can be inspected and converted to data lists or OM objects using the SDIF package tools.
 
 The default location for reading/writing the SuperVP parameters files can be set in the Preferences.
+
+**More on SDIF: http://sdif.sourceforge.net/**
 
 ## Library Design and Sound Processing Options
 
