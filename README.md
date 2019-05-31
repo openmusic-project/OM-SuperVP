@@ -68,4 +68,4 @@ OM-SuperVP boxes have a number fixed of inputs + somme additional _keyword_ inpu
 
 Generally speaking, the options proposed in the OM boxes strictly match the corresponding options in AudioSculpt. See the function documetations (**d**) to get an overview and description of the different options of the OM-SuperVP boxes.
 
-=> Consult the AudioSculpt User Manual in order to understand and set the values of these parameters. 
+=> Consult the [AudioSculpt User Manual](http://support.ircam.fr/docs/AudioSculpt/3.0/) in order to understand and set the values of these parameters. 
