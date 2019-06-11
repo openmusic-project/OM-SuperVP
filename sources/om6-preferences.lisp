@@ -12,7 +12,9 @@
 ;;; Authors: Jean Bresson (IRCAM - 2006-2010)
 ;;;
 ;;;===================================================
-
+; PREFERENCES FOR OM6
+; File author: J. Bresson (IRCAM - 2006-2010)
+;=====================================================
 
 
 (in-package :om)

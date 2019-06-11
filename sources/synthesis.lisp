@@ -1,6 +1,6 @@
 ;============================================================================
 ; OM-SuperVP
-; SuperVP sound analysis and processing for om7
+; SuperVP sound analysis and processing for OpenMusic
 ;============================================================================
 ;
 ;   This program is free software. For information on usage 

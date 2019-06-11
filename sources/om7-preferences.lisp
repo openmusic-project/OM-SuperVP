@@ -11,7 +11,7 @@
 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 ;
 ;============================================================================
-; PREFERENCES
+; PREFERENCES FOR OM7
 ; File author: J. Bresson (IRCAM - 2017)
 ;============================================================================
 
