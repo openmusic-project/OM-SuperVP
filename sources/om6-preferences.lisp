@@ -70,7 +70,6 @@
 
 
 (defmethod get-external-name ((module (eql 'svp))) "SuperVP")
-(defmethod get-external-icon ((module (eql 'svp))) (and (exist-lib-p "OM-SuperVP") (list 950 (find-library "OM-SuperVP"))))
 
 (defmethod get-external-module-vals ((module (eql 'svp)) modulepref) (get-pref modulepref :svp-options))
 (defmethod get-external-module-path ((module (eql 'svp)) modulepref) (get-pref modulepref :svp-path))
