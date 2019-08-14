@@ -13,6 +13,10 @@ This program is free software. It is distributed in the hope that it will be use
 
 _This library does NOT include SuperVP sources or binaries, which must be installed separately and located in the SuperVP section of OM Preferences/Libraries tab._
 
+
+**=> Get SuperVP here: https://forum.ircam.fr/projects/detail/analysissynthesis-command-line-tools/**    
+... or point OM Preferences to the SuperVP version built-in with Ircam's [AudioSculpt](https://forum.ircam.fr/projects/detail/audiosculpt/) software.  
+
 *************
 
 ## Description
