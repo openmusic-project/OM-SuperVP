@@ -77,7 +77,7 @@ SuperVP can also be selected as a sound normalizer in OM sound processing (see P
 (unless (fboundp 'om::set-lib-release) (defmethod om::set-lib-release (version &optional lib) nil))
 
 
-(om::set-lib-release 2.10)
+(om::set-lib-release 2.11)
 
 ;;; compat
 (defun om::om-directory-pathname-p (p) (om::directoryp p))
@@ -86,7 +86,7 @@ SuperVP can also be selected as a sound normalizer in OM sound processing (see P
 
 (print "
 ;;;==========================================
-;;; OM-SuperVP 2.10
+;;; OM-SuperVP 2.11
 ;;; SuperVP sound analysis and processing for OpenMusic
 ;;;
 ;;; J. Bresson, J. Lochard, IRCAM (2006-2018)
