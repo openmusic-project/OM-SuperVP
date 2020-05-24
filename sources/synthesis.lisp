@@ -163,14 +163,14 @@
     (om::supervp-cross-synthesis sound1 sound2 parampath windowsize fftsize windowstep-oversamp 
                                        window-type normalize crossmode outfile)))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-cross-synthesis ((sound1 t) (sound2 t) (param om::textbuffer) windowsize fftsize windowstep-oversamp 
                                      window-type normalize crossmode outfile)
   (let ((parampath (make-temp-param param (om::svp-paramfile "tempcross.par"))))
     (om::supervp-cross-synthesis sound1 sound2 parampath windowsize fftsize windowstep-oversamp 
                                        window-type normalize crossmode outfile)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-cross-synthesis ((sound1 t) (sound2 t) (param om::textfile) windowsize fftsize windowstep-oversamp 
                                      window-type normalize crossmode outfile)
   (let ((parampath (make-temp-param param (om::svp-paramfile "tempcross.par"))))

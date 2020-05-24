@@ -22,7 +22,7 @@
 
 
 ;;; !! COMPAT OM6/OM7: textfile vs. textbuffer
-#-om7
+#-om-sharp
 (defmethod om::save-as-text ((self t) file) (om::save-params self file))
   
 ;;;================ 
@@ -51,11 +51,11 @@
   (format nil "~D" self))
 
 ;;; !! compat
-#+om7
+#+om-sharp
 (defmethod make-temp-param ((self om::textbuffer) &optional (filename "svp-tmp-param.par"))
   (namestring (om::add-tmp-file (om::save-as-text self (if (pathnamep filename) filename (om::svp-paramfile filename))))))
 
-#-om7
+#-om-sharp
 (defmethod make-temp-param ((self om::textfile) &optional (filename "svp-tmp-param.par")) 
   (namestring (om::add-tmp-file (om::save-params self (if (pathnamep filename) filename (om::svp-paramfile filename))))))
 
@@ -203,12 +203,12 @@
 (defmethod! om::supervp-timestretch ((self string))
     (format nil "-D~s" (namestring (if (probe-file (pathname self)) self (om::svp-paramfile self)))))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-timestretch ((self om::textbuffer))
   (let ((tmpfile (make-temp-param self (om::svp-paramfile "temptimestretch.par"))))
     (format nil "-D\"~a\"" (namestring tmpfile))))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-timestretch ((self om::textfile))
   (let ((tmpfile (make-temp-param self (om::svp-paramfile "temptimestretch.par"))))
     (format nil "-D\"~a\"" (namestring tmpfile))))
@@ -234,13 +234,13 @@
 (defmethod get-trans-params ((self om::bpf)) (om::point-pairs self))
 (defmethod get-trans-params ((self string)) (get-trans-params (pathname self)))
 
-#+om7
+#+om-sharp
 (defmethod get-trans-params ((self pathname))
   (om::format-from-text-lines 
    (remove "" (om::lines-from-file self) :test 'string-equal)
    :lines-cols))
 
-#-om7
+#-om-sharp
 (defmethod get-trans-params ((self pathname)) 
   (when (probe-file self)
     (let ((tmpbuffer (om::om-make-buffer))
@@ -250,9 +250,9 @@
       (om::om-kill-buffer tmpbuffer)
       lst)))
 
-#+om7
+#+om-sharp
 (defmethod get-trans-params ((self om::textbuffer)) (om::textbuffer-read self :lines-cols))
-#-om7
+#-om-sharp
 (defmethod get-trans-params ((self om::textfile)) (om::list-of-data (om::buffer-text self)))
  
 
@@ -329,11 +329,11 @@
 (defmethod! om::supervp-transposition ((self list) preserve-enveloppe enveloppe-type filter-order &optional (envtransp 0) (time-correction t) (mode 0))
   (transposition-cmd self preserve-enveloppe enveloppe-type filter-order envtransp time-correction mode))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-transposition ((self om::textbuffer) preserve-enveloppe enveloppe-type filter-order &optional (envtransp 0) (time-correction t) (mode 0))
   (transposition-cmd self preserve-enveloppe enveloppe-type filter-order envtransp time-correction mode))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-transposition ((self om::textfile) preserve-enveloppe enveloppe-type filter-order &optional (envtransp 0) (time-correction t) (mode 0))
   (transposition-cmd self preserve-enveloppe enveloppe-type filter-order envtransp time-correction mode))
 
@@ -363,12 +363,12 @@
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "fshift.par"))))
       (format nil "-Ffshift \"~a\"" tmpfile)))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-frequencyshift ((self om::textbuffer))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "fshift.par"))))
       (format nil "-Ffshift \"~a\"" tmpfile)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-frequencyshift ((self om::textfile))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "fshift.par"))))
       (format nil "-Ffshift \"~a\"" tmpfile)))
@@ -398,12 +398,12 @@
                          (namestring (if (probe-file (pathname self)) self (om::svp-paramfile self))))
                  extrapolation))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-breakpointfilter ((self om::textbuffer) extrapolation)
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "breakpt.par"))))
       (breakpt-cmd (format nil "\"~a\"" tmpfile) extrapolation)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-breakpointfilter ((self om::textfile) extrapolation)
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "breakpt.par"))))
       (breakpt-cmd (format nil "\"~a\"" tmpfile) extrapolation)))
@@ -440,12 +440,12 @@
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "formant.par"))))
       (formant-cmd (format nil "\"~a\"" tmpfile) interpolation extrapolation)))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-formantfilter ((self om::textbuffer) interpolation extrapolation)
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "formant.par"))))
       (formant-cmd (format nil "\"~a\"" tmpfile) interpolation extrapolation)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-formantfilter ((self om::textfile) interpolation extrapolation)
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "formant.par"))))
       (formant-cmd (format nil "\"~a\"" tmpfile) interpolation extrapolation)))
@@ -479,12 +479,12 @@ When <extrapolation>, SuperVP applies the treatment outside the time limits defi
                        (namestring (if (probe-file (pathname self)) self (om::svp-paramfile self))))
                extrapolation))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-bandfilter  ((self om::textbuffer) extrapolation)
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "fband.par"))))
       (fband-cmd (format nil "\"~a\"" tmpfile) extrapolation)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-bandfilter  ((self om::textfile) extrapolation)
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "fband.par"))))
       (fband-cmd (format nil "\"~a\"" tmpfile) extrapolation)))
@@ -515,12 +515,12 @@ When <extrapolation>, SuperVP applies the treatment outside the time limits defi
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "clipping.par"))))
       (clipping-cmd (format nil "\"~a\"" tmpfile) renormalize)))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-clipping ((self om::textbuffer) renormalize)
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "clipping.par"))))
       (clipping-cmd (format nil "\"~a\"" tmpfile) renormalize)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-clipping ((self om::textfile) renormalize)
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "clipping.par"))))
       (clipping-cmd (format nil "\"~a\"" tmpfile) renormalize)))
@@ -547,12 +547,12 @@ When <extrapolation>, SuperVP applies the treatment outside the time limits defi
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "freeze.par"))))
       (format nil "-Anewfreeze \"~a\"" tmpfile)))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-freeze ((self om::textbuffer))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "freeze.par"))))
       (format nil "-Anewfreeze \"~a\"" tmpfile)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-freeze ((self om::textfile))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "freeze.par"))))
       (format nil "-Anewfreeze \"~a\"" tmpfile)))
@@ -578,12 +578,12 @@ When <extrapolation>, SuperVP applies the treatment outside the time limits defi
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "surfacefilter.par"))))
       (format nil "-Fsurface \"~a\"" tmpfile)))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-surfacefilter ((self om::textbuffer))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "surfacefilter.par"))))
       (format nil "-Fsurface \"~a\"" tmpfile)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-surfacefilter ((self om::textfile))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "surfacefilter.par"))))
       (format nil "-Fsurface \"~a\"" tmpfile)))
@@ -604,12 +604,12 @@ When <extrapolation>, SuperVP applies the treatment outside the time limits defi
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "posfile.par"))))
       (format nil "-Ipos \"~a\"" tmpfile)))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-filepos ((self om::textbuffer))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "posfile.par"))))
       (format nil "-Ipos \"~a\"" tmpfile)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-filepos ((self om::textfile))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "posfile.par"))))
       (format nil "-Ipos \"~a\"" tmpfile)))
@@ -638,12 +638,13 @@ When <extrapolation>, SuperVP applies the treatment outside the time limits defi
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "gain.par"))))
       (format nil "-ggain \"~a\"" tmpfile)))
 
-#+om7
+#+om-sharp
 (defmethod! om::supervp-gain ((self om::textbuffer))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "gain.par"))))
       (format nil "-ggain \"~a\""  tmpfile)))
 
-#-om7
+#-om-sharp
 (defmethod! om::supervp-gain ((self om::textfile))
     (let ((tmpfile (make-temp-param self (om::svp-paramfile "gain.par"))))
       (format nil "-ggain \"~a\""  tmpfile)))
+
