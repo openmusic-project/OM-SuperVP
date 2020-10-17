@@ -22,7 +22,7 @@
   (:pathname (:directory (:relative "sources")) (:name "synthesis"))
   (:pathname (:directory (:relative "sources")) (:name "channels"))
   (:pathname (:directory (:relative "sources")) (:name "formants"))
-  (:pathname (:directory (:relative "sources")) (:name "om7-preferences")))
+  (:pathname (:directory (:relative "sources")) (:name "omsharp-preferences")))
 
 ;;; SYMBOLS VISIBLE AND ACCESSIBLE THROUGH THE OM PACKAGE TREE
 (:symbols
