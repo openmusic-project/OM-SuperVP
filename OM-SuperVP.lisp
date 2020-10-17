@@ -34,7 +34,6 @@
         "sources/synthesis"
         "sources/channels"
         "sources/formants"
-        "sources/om_asx/omasx-transposition"
         "sources/om-preferences"
         ))
 
