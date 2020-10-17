@@ -21,7 +21,6 @@
 (in-package :svp)
 
 
-;;; !! COMPAT OM6/OM7: textfile vs. textbuffer
 #-om-sharp
 (defmethod om::save-as-text ((self t) file) (om::save-params self file))
   
