@@ -22,9 +22,9 @@
 
 
 #-om-sharp
-(defmethod om::save-as-text ((self t) &optional (path "data") (type "txt"))
+(defmethod om::save-as-text ((self t) &optional (file "data.txt"))
   (om::save-params self file))
-  
+
 ;;;================ 
 ;;; PARAM FILES 
 ;;;================
