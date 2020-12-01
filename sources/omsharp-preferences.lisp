@@ -1,6 +1,6 @@
 ;============================================================================
 ; OM-SuperVP
-; SuperVP sound analysis and processing for om7
+; SuperVP sound analysis and processing for om#
 ;============================================================================
 ;
 ;   This program is free software. For information on usage 
@@ -11,7 +11,7 @@
 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 ;
 ;============================================================================
-; PREFERENCES FOR OM7
+; PREFERENCES FOR om#
 ; File author: J. Bresson (IRCAM - 2017)
 ;============================================================================
 
