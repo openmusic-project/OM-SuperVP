@@ -15,7 +15,7 @@ _This library does NOT include SuperVP sources or binaries, which must be instal
 
 
 **=> Get SuperVP here: https://forum.ircam.fr/projects/detail/analysissynthesis-command-line-tools/**    
-... or point OM Preferences to the SuperVP version built-in with Ircam's [AudioSculpt](https://forum.ircam.fr/projects/detail/audiosculpt/) software.  
+
 
 *************
 
