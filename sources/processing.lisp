@@ -71,7 +71,8 @@
                                  normalize audio-res extend-across
                                  outpath)
   
-  (let ((supervp-path (om::svp-path)))
+  (let ((supervp-path (om::svp-path))
+        (audio-format (if (equal :aiff om::*def-snd-format*) "a" "w")))
     
     (if (and supervp-path (probe-file supervp-path))
         (let ((srcpath (pathname srcpath))
@@ -125,7 +126,7 @@
             (loop for p in (om::list! processings) do (setf command (om::string+ command p " ")))
         
             ;;; out
-            (setf command (om::string+ command (format nil "-Osa~D ~s" audio-res (namestring outpath))))
+            (setf command (om::string+ command (format nil "-Os~A~D ~s" audio-format om::*audio-res* (namestring outpath))))
         
             command))
   
