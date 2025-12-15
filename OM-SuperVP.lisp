@@ -76,7 +76,7 @@ SuperVP can also be selected as a sound normalizer in OM sound processing (see P
 (unless (fboundp 'om::set-lib-release) (defmethod om::set-lib-release (version &optional lib) nil))
 
 
-(om::set-lib-release 2.13)
+(om::set-lib-release 2.14)
 
 ;;; compat
 (defun om::om-directory-pathname-p (p) (om::directoryp p))
